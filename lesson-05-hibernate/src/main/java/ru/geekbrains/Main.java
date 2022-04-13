@@ -1,70 +1,54 @@
 package ru.geekbrains;
 
-import org.hibernate.cfg.Configuration;
-import ru.geekbrains.model.User;
+import ru.geekbrains.model.Product;
+import ru.geekbrains.service.ProductService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-        EntityManagerFactory emFactory = new Configuration()
-                .configure("hibernate.cfg.xml")
-                .buildSessionFactory();
-
-        EntityManager em = emFactory.createEntityManager();
-
-        // INSERT
-//        em.getTransaction().begin();
-//
-//        em.persist(new User("User 1", "aaffa@bffdbb@.cc", "apaaapappappa"));
-//        em.persist(new User("User 2", "aadda@bdddbb@.cc", "apapapfffappa"));
-//        em.persist(new User("User 3", "aassaaa@bbb@.cc", "ahhhhfdapappappa"));
-//
-//        em.getTransaction().commit();
-
-        // SELECT
-//        User user = em.find(User.class, 1L);
-//        System.out.println("User with id 1 " + user);
-
-        // SELECT HQL/JPQL
-//        List<User> users = em.createQuery("from User u where u.id in (1, 2)", User.class)
-//                .getResultList();
-//        users.forEach(System.out::println);
-
-        // UPDATE
-        // 1
-//        em.getTransaction().begin();
-//
-//        User user = em.find(User.class, 1L);
-//        user.setUsername("User 111");
-//
-//        em.getTransaction().commit();
-
-        // 2
-//        em.getTransaction().begin();
-//
-//        User user = new User("User 222", "user_222@mail.com", "super_password_123");
-//        user.setId(2L);
-//        em.merge(user);
-//
-//        em.getTransaction().commit();
-
-        // DELETE
-        em.getTransaction().begin();
-
-        User user = em.find(User.class, 2L);
-        em.remove(user);
-
-//        em.createQuery("delete from User u where u.id = 123")
-//                .executeUpdate();
-
-        em.getTransaction().commit();
-
-        em.close();
-
-        emFactory.close();
+        ProductService productService = new ProductService();
+        Product product1 = new Product( 1L, "Product 1", 100000.0);
+        Product product2 = new Product( 2L, "Product 2", 200000.0);
+        Product product3 = new Product( 3L, "Product 3", 300000.0);
+        System.out.println("*** Persist - start ***");
+        productService.persist(product1);
+        productService.persist(product2);
+        productService.persist(product3);
+        List<Product> products1 = productService.findAll();
+        System.out.println("Products Persisted are :");
+        for (Product b : products1) {
+            System.out.println("-" + b.toString());
+        }
+        System.out.println("*** Persist - end ***");
+        System.out.println("*** Update - start ***");
+        product1.setTitle("Product 1");
+        productService.update(product1);
+        System.out.println("Product Updated is =>" +productService.findById(product1.getId()).toString());
+        System.out.println("*** Update - end ***");
+        System.out.println("*** Find - start ***");
+        Long id1 = product1.getId();
+        Product another = productService.findById(id1);
+        System.out.println("Product found with id " + id1 + " is =>" + another.toString());
+        System.out.println("*** Find - end ***");
+        System.out.println("*** Delete - start ***");
+        Long id3 = product3.getId();
+        productService.delete(id3);
+        System.out.println("Deleted product with id " + id3 + ".");
+        System.out.println("Now all products are " + productService.findAll().size() + ".");
+        System.out.println("*** Delete - end ***");
+        System.out.println("*** FindAll - start ***");
+        List<Product> products2 = productService.findAll();
+        System.out.println("Products found are :");
+        for (Product b : products2) {
+            System.out.println("-" + b.toString());
+        }
+        System.out.println("*** FindAll - end ***");
+        System.out.println("*** DeleteAll - start ***");
+        productService.deleteAll();
+        System.out.println("Products found are now " + productService.findAll().size());
+        System.out.println("*** DeleteAll - end ***");
+        System.exit(0);
     }
 }
