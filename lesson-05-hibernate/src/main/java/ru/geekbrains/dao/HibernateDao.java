@@ -3,7 +3,7 @@ package ru.geekbrains.dao;
 import java.io.Serializable;
 import java.util.List;
 
-public interface ProductDao<T, Id extends Serializable> {
+public interface HibernateDao<T, Id extends Serializable> {
 
     public void persist(T entity);
 

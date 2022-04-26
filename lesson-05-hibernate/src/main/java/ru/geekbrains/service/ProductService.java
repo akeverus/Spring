@@ -1,10 +1,12 @@
 package ru.geekbrains.service;
 
+import org.springframework.stereotype.Service;
 import ru.geekbrains.dao.impl.ProductDaoImpl;
 import ru.geekbrains.model.Product;
 
 import java.util.List;
 
+@Service
 public class ProductService {
 
     private static ProductDaoImpl productDaoImpl;
@@ -14,13 +16,13 @@ public class ProductService {
     }
 
     public void persist(Product entity) {
-        productDaoImpl.openCurrentSessionwithTransaction();
+        productDaoImpl.openCurrentSessionWithTransaction();
         productDaoImpl.persist(entity);
         productDaoImpl.closeCurrentSessionWithTransaction();
     }
 
     public void update(Product entity) {
-        productDaoImpl.openCurrentSessionwithTransaction();
+        productDaoImpl.openCurrentSessionWithTransaction();
         productDaoImpl.update(entity);
         productDaoImpl.closeCurrentSessionWithTransaction();
     }
@@ -33,7 +35,7 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productDaoImpl.openCurrentSessionwithTransaction();
+        productDaoImpl.openCurrentSessionWithTransaction();
         Product product = productDaoImpl.findById(id);
         productDaoImpl.delete(product);
         productDaoImpl.closeCurrentSessionWithTransaction();
@@ -47,7 +49,7 @@ public class ProductService {
     }
 
     public void deleteAll() {
-        productDaoImpl.openCurrentSessionwithTransaction();
+        productDaoImpl.openCurrentSessionWithTransaction();
         productDaoImpl.deleteAll();
         productDaoImpl.closeCurrentSessionWithTransaction();
     }

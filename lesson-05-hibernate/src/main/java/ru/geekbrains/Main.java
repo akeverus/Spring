@@ -1,24 +1,34 @@
 package ru.geekbrains;
 
+import ru.geekbrains.model.Employee;
 import ru.geekbrains.model.Product;
+import ru.geekbrains.service.EmployeeService;
 import ru.geekbrains.service.ProductService;
 
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         ProductService productService = new ProductService();
-        Product product1 = new Product( 1L, "Product 1", 100000.0);
-        Product product2 = new Product( 2L, "Product 2", 200000.0);
-        Product product3 = new Product( 3L, "Product 3", 300000.0);
+        EmployeeService employeeService = new EmployeeService();
+
+        Product product1 = new Product( "Product 1", 100000.0);
+        Product product2 = new Product( "Product 2", 200000.0);
+        Product product3 = new Product( "Product 3", 300000.0);
+
+        Set<Product> products1 = new HashSet<>(Arrays.asList(product1, product2));
+        Set<Product> products2 = new HashSet<>(Arrays.asList(product2, product3));
+
+        Employee employee1 = new Employee(products1);
+        Employee employee2 = new Employee(products2);
+
         System.out.println("*** Persist - start ***");
-        productService.persist(product1);
-        productService.persist(product2);
-        productService.persist(product3);
-        List<Product> products1 = productService.findAll();
+        employeeService.persist(employee1);
+        employeeService.persist(employee2);
+        List<Product> products3 = productService.findAll();
         System.out.println("Products Persisted are :");
-        for (Product b : products1) {
+        for (Product b : products3) {
             System.out.println("-" + b.toString());
         }
         System.out.println("*** Persist - end ***");
@@ -39,9 +49,9 @@ public class Main {
         System.out.println("Now all products are " + productService.findAll().size() + ".");
         System.out.println("*** Delete - end ***");
         System.out.println("*** FindAll - start ***");
-        List<Product> products2 = productService.findAll();
+        List<Product> products4 = productService.findAll();
         System.out.println("Products found are :");
-        for (Product b : products2) {
+        for (Product b : products4) {
             System.out.println("-" + b.toString());
         }
         System.out.println("*** FindAll - end ***");
