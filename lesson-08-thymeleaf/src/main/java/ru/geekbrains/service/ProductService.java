@@ -1,5 +1,7 @@
 package ru.geekbrains.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.model.Product;
 import ru.geekbrains.repository.ProductRepository;
@@ -30,6 +32,10 @@ public class ProductService {
 
     public List<Product> findAll() {
         return (List<Product>) productRepository.findAll();
+    }
+
+    public Page<Product> findPaginated(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
 }
